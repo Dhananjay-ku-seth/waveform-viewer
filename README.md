@@ -4,7 +4,7 @@
 
 Part of the [LabBench](https://labbench-hub.vercel.app/) suite of interactive engineering tools.
 
-**Live demo:** _add your Vercel URL here_
+**Live demo:** https://waveform-viewer-theta.vercel.app/
 
 ## What it does
 
