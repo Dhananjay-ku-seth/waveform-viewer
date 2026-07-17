@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import { PRESETS, clockSignal, type Bit, type Signal } from "./waveforms";
+import AuthPanel from "./AuthPanel";
+import SavePreset, { type WaveformConfig } from "./SavePreset";
 
 const CELL_W = 46;
 const LANE_H = 44;
@@ -84,10 +86,22 @@ export default function App() {
           <p>Verilog-style timing diagrams · click cells to drive the input · every register updates live</p>
         </div>
         <div className="badges">
-          <a className="labbench-badge" href="https://labbench-hub.vercel.app/" target="_blank" rel="noopener noreferrer">⚡ LabBench</a>
-          <a className="src" href="https://dhananjay-kumar-seth.vercel.app/" target="_blank" rel="noopener noreferrer">ECE Portfolio · Dhananjay Seth</a>
+          <AuthPanel />
+          <div className="badge-links">
+            <a className="labbench-badge" href="https://labbench-hub.vercel.app/" target="_blank" rel="noopener noreferrer">⚡ LabBench</a>
+            <a className="src" href="https://dhananjay-kumar-seth.vercel.app/" target="_blank" rel="noopener noreferrer">ECE Portfolio · Dhananjay Seth</a>
+          </div>
         </div>
       </header>
+
+      <div className="savebar">
+        <SavePreset
+          config={{ presetId, cycles, control }}
+          onLoad={(c: WaveformConfig) => {
+            setPresetId(c.presetId); setCycles(c.cycles); setControl(c.control);
+          }}
+        />
+      </div>
 
       <div className="panel">
         <div className="seg">
@@ -125,8 +139,7 @@ export default function App() {
       </div>
 
       <div className="pro-strip">
-        <span>🔒 Export as PNG / SVG / VCD, save sessions, add custom signals — <b>LabBench Pro</b>, coming soon.</span>
-        <a href="mailto:adplayers746@gmail.com?subject=LabBench%20Pro%20waitlist">Get notified →</a>
+        <span>🔒 Export as PNG / SVG / VCD, add custom signals — more <b>LabBench Pro</b> features coming soon.</span>
       </div>
 
       <footer>Positive-edge-triggered register model, computed from scratch — no EDA/waveform libraries.</footer>
