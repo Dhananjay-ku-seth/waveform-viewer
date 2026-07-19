@@ -8,6 +8,7 @@ export type WaveformConfig = {
   presetId: string;
   cycles: number;
   control: Bit[];
+  customSignals?: { id: string; name: string; bits: Bit[] }[];
 };
 
 type Row = { id: string; name: string; created_at: string };

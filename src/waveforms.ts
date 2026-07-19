@@ -7,7 +7,7 @@
 // ============================================================================
 
 export type Bit = 0 | 1;
-export type Signal = { name: string; bits: Bit[]; editable?: boolean; group?: "input" | "output" | "clock" };
+export type Signal = { name: string; bits: Bit[]; editable?: boolean; group?: "input" | "output" | "clock" | "custom" };
 
 export type Preset = {
   id: string;
