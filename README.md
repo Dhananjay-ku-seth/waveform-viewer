@@ -24,7 +24,7 @@ real hardware.
 Sign in to save and reload sessions, add free-standing custom signal lanes, and export the current timing
 diagram as **PNG**, **SVG**, or a standard **VCD** (Value Change Dump) — part of the same optional ₹29/mo
 LabBench Pro subscription as the rest of the suite. Upgrade from
-[Logic Circuit Simulator](https://logic-circuit-sim.vercel.app/), which hosts the checkout for all 5 tools.
+[Logic Circuit Simulator](https://logic-circuit-sim.vercel.app/), which hosts the checkout for all 7 tools.
 
 ## Tech
 
