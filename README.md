@@ -19,10 +19,18 @@ real hardware.
 - **4-Bit Counter** — Q3..Q0 count 0000→1111 in proper binary ripple order.
 - **4-Bit Shift Register** — SIN shifts serially through Q0→Q1→Q2→Q3.
 
+## LabBench Pro
+
+Sign in to save and reload sessions, add free-standing custom signal lanes, and export the current timing
+diagram as **PNG**, **SVG**, or a standard **VCD** (Value Change Dump) — part of the same optional ₹29/mo
+LabBench Pro subscription as the rest of the suite. Upgrade from
+[Logic Circuit Simulator](https://logic-circuit-sim.vercel.app/), which hosts the checkout for all 5 tools.
+
 ## Tech
 
-React + TypeScript + Vite. The register/timing model and the SVG waveform renderer are both written from
-scratch — no EDA or waveform libraries.
+React + TypeScript + Vite. The register/timing model, the SVG waveform renderer, and the PNG/SVG/VCD
+export are all written from scratch — no EDA or waveform libraries. Auth/save-load via Supabase
+(Postgres + RLS).
 
 ## Run locally
 ```sh
