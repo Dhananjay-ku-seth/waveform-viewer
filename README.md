@@ -18,13 +18,15 @@ real hardware.
 - **Clock Divider** — Q toggles every rising edge (÷2), with a synchronous RESET input.
 - **4-Bit Counter** — Q3..Q0 count 0000→1111 in proper binary ripple order.
 - **4-Bit Shift Register** — SIN shifts serially through Q0→Q1→Q2→Q3.
+- Hover any cycle to drop a synchronized cursor across every lane at once — read every signal's value
+  at that exact cycle without losing your place.
 
 ## LabBench Pro
 
 Sign in to save and reload sessions, add free-standing custom signal lanes, and export the current timing
 diagram as **PNG**, **SVG**, or a standard **VCD** (Value Change Dump) — part of the same optional ₹29/mo
 LabBench Pro subscription as the rest of the suite. Upgrade from
-[Logic Circuit Simulator](https://logic-circuit-sim.vercel.app/), which hosts the checkout for all 7 tools.
+[Logic Circuit Simulator](https://logic-circuit-sim.vercel.app/), which hosts the checkout for all 9 tools.
 
 ## Tech
 

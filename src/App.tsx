@@ -9,6 +9,9 @@ const CELL_W = 46;
 const LANE_H = 44;
 const HIGH_Y = 10;
 const LOW_Y = 32;
+// .scope's left padding (6px) + .lane-name width (64px) + the flex gap between name and svg (10px) —
+// how far a lane's own SVG (column 0) sits from the .scope element's own bounding-rect left edge.
+const SCOPE_LABEL_OFFSET = 80;
 
 function stepPath(bits: Bit[]): string {
   if (bits.length === 0) return "";
@@ -25,14 +28,15 @@ function stepPath(bits: Bit[]): string {
   return d;
 }
 
-function Lane({ sig, editable, onToggle, onRemove }: {
+function Lane({ sig, editable, onToggle, onRemove, hoverCol, idx }: {
   sig: Signal; editable?: boolean; onToggle?: (i: number) => void; onRemove?: () => void;
+  hoverCol: number | null; idx: number;
 }) {
   const w = sig.bits.length * CELL_W;
   const color = sig.group === "clock" ? "#94a3b8" : sig.group === "input" ? "#fb923c"
     : sig.group === "custom" ? "#34d399" : "#818cf8";
   return (
-    <div className="lane">
+    <div className="lane" style={{ ["--i" as any]: idx }}>
       <span className={"lane-name" + (editable ? " editable" : "")}>
         {sig.name}
         {onRemove && <button className="lane-del" onClick={onRemove} title="Remove signal">✕</button>}
@@ -41,6 +45,9 @@ function Lane({ sig, editable, onToggle, onRemove }: {
         {sig.bits.map((_, i) => (
           <line key={i} x1={i * CELL_W} y1={0} x2={i * CELL_W} y2={LANE_H} className="gridline" />
         ))}
+        {hoverCol !== null && (
+          <rect x={hoverCol * CELL_W} y={0} width={CELL_W} height={LANE_H} className="col-highlight" />
+        )}
         <path d={stepPath(sig.bits)} fill="none" stroke={color} strokeWidth={2.5} strokeLinejoin="round" />
         {editable &&
           sig.bits.map((_, i) => (
@@ -63,6 +70,7 @@ export default function App() {
   const [customSignals, setCustomSignals] = useState<CustomSignal[]>([]);
   const [addingSignal, setAddingSignal] = useState(false);
   const [newSignalName, setNewSignalName] = useState("");
+  const [hoverCol, setHoverCol] = useState<number | null>(null);
 
   const preset = PRESETS.find((p) => p.id === presetId)!;
   const clk = useMemo(() => clockSignal(cycles), [cycles]);
@@ -168,18 +176,30 @@ export default function App() {
         <p className="hint-line">{preset.controlLabel}</p>
 
         <div className="scope-wrap">
-          <div className="scope" style={{ width }}>
-            <Lane sig={clk} />
-            {signals.map((s) => (
-              <Lane key={s.name} sig={s} editable={s.editable} onToggle={s.editable ? toggle : undefined} />
+          <div
+            className="scope"
+            style={{ width }}
+            onMouseMove={(e) => {
+              const r = e.currentTarget.getBoundingClientRect();
+              const x = e.clientX - r.left - SCOPE_LABEL_OFFSET;
+              const col = Math.floor(x / CELL_W);
+              setHoverCol(col >= 0 && col < cycles ? col : null);
+            }}
+            onMouseLeave={() => setHoverCol(null)}
+          >
+            <Lane sig={clk} hoverCol={hoverCol} idx={0} />
+            {signals.map((s, i) => (
+              <Lane key={s.name} sig={s} editable={s.editable} onToggle={s.editable ? toggle : undefined}
+                hoverCol={hoverCol} idx={i + 1} />
             ))}
-            {customSignals.map((c) => (
+            {customSignals.map((c, i) => (
               <Lane key={c.id} sig={{ name: c.name, bits: c.bits, group: "custom", editable: true }}
-                editable onToggle={(i) => toggleCustom(c.id, i)} onRemove={() => removeCustomSignal(c.id)} />
+                editable onToggle={(j) => toggleCustom(c.id, j)} onRemove={() => removeCustomSignal(c.id)}
+                hoverCol={hoverCol} idx={i + 1 + signals.length} />
             ))}
             <div className="ruler" style={{ width }}>
               {Array.from({ length: cycles }).map((_, i) => (
-                <span key={i} style={{ left: i * CELL_W + CELL_W / 2 }}>{i}</span>
+                <span key={i} className={hoverCol === i ? "active" : ""} style={{ left: i * CELL_W + CELL_W / 2 }}>{i}</span>
               ))}
             </div>
           </div>
